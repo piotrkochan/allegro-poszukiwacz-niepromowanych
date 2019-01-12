@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Allegro Poszukiwacz Niepromowanych",
+    "description": "The name of the extension."
+  },
+  "appDescription": {
+    "message": "Plugin przechodzący do pierwszej oferty niepromowanej na Allegro",
+    "description": "The description of the extension."
+  }
+}
