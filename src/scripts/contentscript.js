@@ -44,11 +44,11 @@ function onRequest(request, sender, sendResponse) {
       }
       (async () => {
         let url = new URL(document.URL);
-        let page = url.searchParams.get('page') || 1;
+        let page = url.searchParams.get('p') || 1;
         let response, respDoc;
         const parser = new DOMParser();
         do {
-          page = page + 1;
+          page = parseInt(page) + 1;
           url.searchParams.set('p', page);
           state = { state: 'trying', page };
           response = await fetch(url);
