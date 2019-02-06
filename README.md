@@ -15,4 +15,4 @@ Ten plugin automatycznie znajduje stronę, na której znajdują się oferty niep
 Pobierz dla:
 * Google Chrome - https://chrome.google.com/webstore/detail/allegro-poszukiwacz-niepr/ooinfeioghgjebkpmgdkagbgmbefgdij
 * Firefox - https://addons.mozilla.org/pl/firefox/addon/allegro-znajd%C5%BA-niepromowane/
-* Opera - soon
+* Opera - https://addons.opera.com/pl/extensions/details/allegro-poszukiwacz-niepromowanych/
