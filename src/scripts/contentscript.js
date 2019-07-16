@@ -1,23 +1,28 @@
 import ext from "./utils/ext";
 import storage from "./utils/storage";
 
-var getRegularOfferHeaderElement = (doc) => {
+const scrollOffset = 70;
+
+let getRegularOfferHeaderElement = (doc) => {
   return Array.from(doc.querySelectorAll('h2'))
     .filter(x => x.textContent === 'Lista ofert');
-}
+};
 
-var containsRegularOffers = (doc) => {
+let containsRegularOffers = (doc) => {
   return getRegularOfferHeaderElement(doc).length > 0;
-}
+};
 
-var scrollToRegularOffers = (timeout) => {
-  setTimeout(() => {
-    const header = getRegularOfferHeaderElement(document);
-    if (header) {
-      header[0].scrollIntoView(true);
-    }
-  }, timeout || 1);
-}
+let scrollToRegularOffers = () => {
+  const header = getRegularOfferHeaderElement(document);
+  if (header) {
+    const yCoordinate = header[0].getBoundingClientRect().top + window.pageYOffset;
+
+    window.scrollTo({
+      top: yCoordinate - scrollOffset,
+      behavior: 'smooth'
+    });
+  }
+};
 
 storage.get('found', (result) => {
   if (result.found === true) {
@@ -26,20 +31,18 @@ storage.get('found', (result) => {
     }
   }
   storage.set({ found: null });
+});
 
-})
-
-let state = {}
+let state = {};
 
 function onRequest(request, sender, sendResponse) {
   switch (request.action) {
     case 'get-state':
       return sendResponse(state);
-      break;
     case 'find-regular-offers':
       if (containsRegularOffers(document)) {
         scrollToRegularOffers();
-        sendResponse({ state: 'found', page: -1});
+        sendResponse({ state: 'found', page: -1 });
         return false;
       }
       (async () => {
@@ -57,13 +60,13 @@ function onRequest(request, sender, sendResponse) {
         } while (response.status === 200 && !containsRegularOffers(respDoc));
 
         // just store info about found result, after reload
-        // contentscript will scroll to the result.
+        // content script will scroll to the result.
         storage.set({ found: true });
         window.location.href = url;
 
         sendResponse({ state: 'found', page });
         state = {};
-      })()
+      })();
       break;
   }
 

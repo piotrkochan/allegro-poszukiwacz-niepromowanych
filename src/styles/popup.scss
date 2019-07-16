@@ -12,21 +12,8 @@ body, html {
   background: $white;
 }
 
-footer {
-  color: $text-secondary;
-  text-align: right;
-  font-size: 0.8em;
-  a {
-    outline: none;
-    color: lighten($text-secondary, 10%);
-    &:hover {
-      color: $text-secondary;
-    }
-  }
-}
-
 .popup-content {
-  min-width: 220px;
+  min-width: 333px;
   min-height: 70px;
   max-width: 350px;
 
@@ -35,11 +22,33 @@ footer {
   }
 }
 
-.app-name {
+h1 {
   font-size: 14px;
   text-transform: uppercase;
   color: $text-secondary;
   text-align: center;
-  margin: 0 auto 1em auto;
+  margin: 0 auto 0.5em auto;
   padding: 0;
+  img {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+#display-container {
+  padding: 10px 0;
+}
+
+footer {
+  color: $text-secondary;
+  border-top: 1px solid $gray;
+  font-size: 0.8em;
+  padding-top: 5px;
+  a {
+    outline: none;
+    color: lighten($text-secondary, 10%);
+    &:hover {
+      color: $text-secondary;
+    }
+  }
 }

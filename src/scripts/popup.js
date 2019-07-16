@@ -1,15 +1,14 @@
 import ext from "./utils/ext";
-import storage from "./utils/storage";
 
-var popup = document.getElementById("app");
+let popup = document.getElementById("app");
 
-var renderMessage = (message) => {
-  var displayContainer = document.getElementById("display-container");
+let renderMessage = (message) => {
+  let displayContainer = document.getElementById("display-container");
   displayContainer.innerHTML = `<p class='message'>${message}</p>`;
-}
+};
 
 ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-  var activeTab = tabs[0];
+  let activeTab = tabs[0];
   const url = new URL(activeTab.url);
   if (url.origin !== "https://allegro.pl" &&
     (url.pathname !== 'listing' && url.pathname.includes('/kategoria/'))) {
@@ -18,28 +17,32 @@ ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   const requestStateInterval = setInterval(() => {
     chrome.tabs.sendMessage(activeTab.id, { action: 'get-state' }, {}, (response) => {
       if (response.state === 'trying') {
-        renderMessage('szukam ofert niepromowanych na stronie: <strong>' + response.page + '</strong>...');
+        renderMessage('szukam niepropowanych na stronie: <strong>' + response.page + '</strong>...');
       }
     });
-  }, 500)
+  }, 500);
 
   chrome.tabs.sendMessage(activeTab.id, { action: 'find-regular-offers' }, (response) => {
-    if (!response || response.page === -1) {
+    if (!response) {
       clearInterval(requestStateInterval);
       return window.close();
     }
     if (response.state === 'found') {
-      renderMessage('Znalazłem na stronie: ' + response.page);
       clearInterval(requestStateInterval);
-      return setTimeout(() => window.close(), 2000);
+      if (response.page > 0) {
+        renderMessage('Znaleziono na stronie: ' + response.page);
+        return setTimeout(() => window.close(), 2000);
+      } else {
+        renderMessage('Znaleziono na aktualnej stronie');
+        return setTimeout(() => window.close(), 1000);
+      }
     }
   });
-
-  return;
 });
 
-var optionsLink = document.querySelector(".github-link");
-optionsLink.addEventListener("click", function (e) {
-  e.preventDefault();
-  ext.tabs.create({ 'url': 'https://github.com/piotrkochan' });
-})
+const optionsLink = document.querySelector(".github-link");
+
+optionsLink.addEventListener("click", (event) => {
+  event.preventDefault();
+  ext.tabs.create({ 'url': 'https://github.com/piotrkochan/allegro-poszukiwacz-niepromowanych' });
+});

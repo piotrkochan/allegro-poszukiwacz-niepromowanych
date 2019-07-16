@@ -20,14 +20,14 @@ const apis = [
   'webNavigation',
   'webRequest',
   'windows',
-]
+];
 
 function Extension () {
-  const _this = this
+  const _this = this;
 
   apis.forEach(function (api) {
 
-    _this[api] = null
+    _this[api] = null;
 
     try {
       if (chrome[api]) {
@@ -49,7 +49,7 @@ function Extension () {
     try {
       _this.api = browser.extension[api]
     } catch (e) {}
-  })
+  });
 
   try {
     if (browser && browser.runtime) {

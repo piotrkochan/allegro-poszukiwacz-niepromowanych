@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "appDescription": {
-    "message": "Plugin przechodzący do pierwszej oferty niepromowanej na Allegro",
+    "message": "Proste wyszukiwanie pierwszej niepropowanej oferty w wynikach na Allegro",
     "description": "The description of the extension."
   }
 }
