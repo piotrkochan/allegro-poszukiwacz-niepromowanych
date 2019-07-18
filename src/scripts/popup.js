@@ -2,6 +2,7 @@ import ext from "./utils/ext";
 
 let popup = document.getElementById("app");
 
+
 let renderMessage = (message) => {
   let displayContainer = document.getElementById("display-container");
   displayContainer.innerHTML = `<p class='message'>${message}</p>`;
@@ -10,10 +11,12 @@ let renderMessage = (message) => {
 ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   let activeTab = tabs[0];
   const url = new URL(activeTab.url);
-  if (url.origin !== "https://allegro.pl" &&
-    (url.pathname !== 'listing' && url.pathname.includes('/kategoria/'))) {
+
+  if (url.origin !== "https://allegro.pl" && (url.pathname !== 'listing' || url.pathname.includes('/kategoria/'))) {
+    window.close();
     return;
   }
+
   const requestStateInterval = setInterval(() => {
     chrome.tabs.sendMessage(activeTab.id, { action: 'get-state' }, {}, (response) => {
       if (response.state === 'trying') {

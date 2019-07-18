@@ -1,5 +1,7 @@
 'use strict';
 
+// this file is used in development mode only
+
 import ext from "./utils/ext";
 
 var LIVERELOAD_HOST = 'localhost:';
@@ -14,7 +16,7 @@ connection.onmessage = function (e) {
   if (e.data) {
     var data = JSON.parse(e.data);
     if (data && data.command === 'reload') {
-      ext.runtime.reload();
+      setTimeout(ext.runtime.reload, 1000);
     }
   }
 };
