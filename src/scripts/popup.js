@@ -1,8 +1,5 @@
 import ext from "./utils/ext";
 
-let popup = document.getElementById("app");
-
-
 let renderMessage = (message) => {
   let displayContainer = document.getElementById("display-container");
   displayContainer.innerHTML = `<p class='message'>${message}</p>`;
