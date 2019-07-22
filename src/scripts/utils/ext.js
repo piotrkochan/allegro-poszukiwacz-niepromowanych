@@ -22,38 +22,24 @@ const apis = [
   'windows',
 ];
 
-function Extension () {
-  const _this = this;
+let extension = {}
 
-  apis.forEach(function (api) {
-
-    _this[api] = null;
-
-    try {
-      if (chrome[api]) {
-        _this[api] = chrome[api]
-      }
-    } catch (e) {}
-
-    try {
-      if (window[api]) {
-        _this[api] = window[api]
-      }
-    } catch (e) {}
-
-    try {
-      if (browser[api]) {
-        _this[api] = browser[api]
-      }
-    } catch (e) {}
-    try {
-      _this[api] = browser.extension[api]
-    } catch (e) {}
-  });
+apis.forEach(function (api) {
+  try {
+    if (chrome[api]) {
+      extension = Object.assign(extension, {[api]: chrome[api]})
+    }
+  } catch (e) {}
 
   try {
-    if (browser && browser.runtime) {
-      this.runtime = browser.runtime
+    if (window[api]) {
+      extension = Object.assign(extension, {[api]: window[api]})
+    }
+  } catch (e) {}
+
+  try {
+    if (browser[api]) {
+      extension = Object.assign(extension, {[api]: browser[api]})
     }
   } catch (e) {}
 
@@ -63,6 +49,18 @@ function Extension () {
     }
   } catch (e) {}
 
-}
+});
 
-module.exports = new Extension();
+try {
+  if (browser && browser.runtime) {
+    extension.runtime = browser.runtime
+  }
+} catch (e) {}
+
+try {
+  if (browser && browser.browserAction) {
+    extension.browserAction = browser.browserAction
+  }
+} catch (e) {}
+
+module.exports = extension;
