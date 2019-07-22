@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "Allegro - skocz do niepromowanych",
+    "message": "Allegro - jump to not promoted offers",
     "description": "The name of the extension."
   },
   "appDescription": {
-    "message": "Proste wyszukiwanie pierwszych niepropowanych ofert w wynikach na Allegro",
+    "message": "Simple search for first not promoted offers in results on Allegro",
     "description": "The description of the extension."
   }
 }

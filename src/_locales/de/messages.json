@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "Allegro - springen Sie zu nicht beworbenen Angeboten",
+    "description": "The name of the extension."
+  },
+  "appDescription": {
+    "message": "Einfache Suche nach ersten unpromotierten Angeboten in den Ergebnissen auf Allegro",
+    "description": "The description of the extension."
+  }
+}

@@ -27,7 +27,7 @@ var defaultManifest = {
         ]
       }
   },
-  firefox: { 'applications': { 'gecko': { 'id': 'my-app-id@mozilla.org' } } }
+  firefox: { 'applications': { 'gecko': { 'id': 'allegro-poszukiwacz-niepromowanych@piotrkochan' } } }
 };
 
 function styles() {
