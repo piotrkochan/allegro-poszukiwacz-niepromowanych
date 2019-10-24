@@ -5,7 +5,7 @@ const scrollOffset = 70;
 
 let getRegularOfferHeaderElement = (doc) => {
   return Array.from(doc.querySelectorAll('h2'))
-    .filter(x => x.textContent === 'Lista ofert');
+    .filter(x => x.textContent === 'Oferty');
 };
 
 let containsRegularOffers = (doc) => {
