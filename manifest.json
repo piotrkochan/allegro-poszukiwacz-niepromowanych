@@ -1,6 +1,6 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
@@ -12,13 +12,16 @@
   "permissions": [
     "tabs",
     "storage",
-    "https://allegro.pl/*"
+    "https://allegro.pl/listing*",
+    "https://allegro.pl/kategoria/*",
+    "https://allegro.pl/uzytkownik/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "https://allegro.pl/listing*",
-        "https://allegro.pl/kategoria/*"
+        "https://allegro.pl/kategoria/*",
+        "https://allegro.pl/uzytkownik/*"
       ],
       "js": [
         "scripts/contentscript.js"

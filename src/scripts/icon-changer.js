@@ -4,7 +4,11 @@ function updateIcon() {
   ext.tabs.query({ active: true }, (data) => {
     let icon = 'icon-gray-32x32.png';
     if (data.length > 0) {
-      if (data[0].url.startsWith("https://allegro.pl/kategoria") || data[0].url.startsWith("https://allegro.pl/listing")) {
+      const url = data[0].url;
+      if (url.startsWith("https://allegro.pl/kategoria") 
+      || url.startsWith("https://allegro.pl/listing")
+      || (url.startsWith("https://allegro.pl/uzytkownik") && !url.endsWith('sklep'))
+      ) {
         icon = 'icon-32x32.png'
       }
     }

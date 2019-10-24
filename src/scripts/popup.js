@@ -7,17 +7,33 @@ let renderMessage = (message) => {
 
 ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   let activeTab = tabs[0];
+
+  if (!activeTab) {
+    return;
+  }
+
   const url = new URL(activeTab.url);
 
-  if (url.origin !== "https://allegro.pl" && (url.pathname !== 'listing' || url.pathname.includes('/kategoria/'))) {
+  if (url.origin !== "https://allegro.pl") {
     window.close();
     return;
   }
 
+  chrome.tabs.sendMessage(activeTab.id, { action: 'check-page-contains-offers' }, {}, ({ found }) => {
+    if (!found) {
+      renderMessage('Wygląda na to, że na tej stronie nie ma ofert.');
+      return setTimeout(() => window.close(), 3000);
+    }
+
+    findRegularOffers(activeTab);
+  });
+});
+
+const findRegularOffers = (activeTab) => {
   const requestStateInterval = setInterval(() => {
     chrome.tabs.sendMessage(activeTab.id, { action: 'get-state' }, {}, (response) => {
       if (response.state === 'trying') {
-        renderMessage('szukam niepropowanych na stronie: <strong>' + response.page + '</strong>...');
+        renderMessage('szukam niepromowanych na stronie: <strong>' + response.page + '</strong>...');
       }
     });
   }, 500);
@@ -38,7 +54,7 @@ ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       }
     }
   });
-});
+};
 
 const optionsLink = document.querySelector(".github-link");
 
