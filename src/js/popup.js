@@ -1,11 +1,11 @@
-import ext from "./utils/ext";
+// import ExtensionPlatform from "./ExtensionInstance.ts";
 
 let renderMessage = (message) => {
   let displayContainer = document.getElementById("display-container");
   displayContainer.innerHTML = `<p class='message'>${message}</p>`;
 };
 
-ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+ExtensionPlatform.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   let activeTab = tabs[0];
 
   if (!activeTab) {

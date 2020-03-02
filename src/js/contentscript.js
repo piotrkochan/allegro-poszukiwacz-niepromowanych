@@ -1,18 +1,15 @@
-import ext from "./utils/ext";
-import storage from "./utils/storage";
-
 const scrollOffset = 70;
 
-let getRegularOfferHeaderElement = (doc) => {
+const getRegularOfferHeaderElement = (doc) => {
   return Array.from(doc.querySelectorAll('h2'))
     .filter(x => x.textContent === 'Oferty');
 };
 
-let containsRegularOffers = (doc) => {
+const containsRegularOffers = (doc) => {
   return getRegularOfferHeaderElement(doc).length > 0;
 };
 
-let scrollToRegularOffers = () => {
+const scrollToRegularOffers = () => {
   const header = getRegularOfferHeaderElement(document);
   if (header) {
     const yCoordinate = header[0].getBoundingClientRect().top + window.pageYOffset;
@@ -24,13 +21,13 @@ let scrollToRegularOffers = () => {
   }
 };
 
-storage.get('found', (result) => {
+chrome.storage.get('found', (result) => {
   if (result.found === true) {
     if (containsRegularOffers(document)) {
       scrollToRegularOffers(2000);
     }
   }
-  storage.set({ found: null });
+  chrome.storage.set({ found: null });
 });
 
 let state = {};
@@ -76,4 +73,4 @@ function onRequest(request, sender, sendResponse) {
   return true;
 }
 
-ext.runtime.onMessage.addListener(onRequest);
+chrome.runtime.onMessage.addListener(onRequest);
