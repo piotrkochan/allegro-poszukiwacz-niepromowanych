@@ -33,7 +33,7 @@
       "iconChanger.bundle.js",
       "background.bundle.js"
     ],
-    "persistent": false
+    "persistent": true
   },
   "browser_action": {
     "default_icon": {

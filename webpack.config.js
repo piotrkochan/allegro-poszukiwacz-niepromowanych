@@ -1,19 +1,23 @@
 const webpack = require("webpack"),
   path = require("path"),
-  fileSystem = require("fs"),
+  fs = require("fs"),
   env = require("./utils/env"),
   CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin,
   CopyWebpackPlugin = require("copy-webpack-plugin"),
   HtmlWebpackPlugin = require("html-webpack-plugin"),
   WriteFilePlugin = require("write-file-webpack-plugin");
 
-// load the secrets
 const alias = {};
 const secretsPath = path.join(__dirname, ("secrets." + env.NODE_ENV + ".js"));
+const extraManifestPath = path.join(__dirname, "manifest", env.TARGET + ".json");
 const fileExtensions = ["jpg", "jpeg", "png", "gif", "eot", "otf", "svg", "ttf", "woff", "woff2"];
+let manifest = {};
 
-if (fileSystem.existsSync(secretsPath)) {
+if (fs.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
+}
+if (fs.existsSync(extraManifestPath)) {
+  manifest = JSON.parse(fs.readFileSync(extraManifestPath).toString());
 }
 
 const options = {
@@ -65,10 +69,11 @@ const options = {
       {
         from: "src/manifest.json",
         transform: function (content, path) {
-          // generates the manifest file using the package.json informations
+          // generates the manifest file using the package.json data
           return Buffer.from(JSON.stringify({
             description: process.env.npm_package_description,
             version: process.env.npm_package_version,
+            ...manifest,
             ...JSON.parse(content.toString())
           }))
         }

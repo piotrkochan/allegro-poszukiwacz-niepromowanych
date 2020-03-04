@@ -25,7 +25,7 @@ function* scan() {
     yield put(scanning(page));
     url.searchParams.set('p', page.toString());
     try {
-      response = yield fetch(url);
+      response = yield fetch(url.toString());
       respDoc = parser.parseFromString(yield response.text(), "text/html");
     } catch (e) {
       // yield put({type: 'SCAN_ERROR'});

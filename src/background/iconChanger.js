@@ -1,10 +1,10 @@
 const urls = [
- "https://allegro.pl/kategoria",
- "https://allegro.pl/listing",
- "https://allegro.pl/uzytkownik",
+  "https://allegro.pl/kategoria",
+  "https://allegro.pl/listing",
+  "https://allegro.pl/uzytkownik",
 ];
 
-const getIcon = (tabs) => {
+const getIcon = tabs => {
   const inactive = 'assets/icon-gray-32x32.png';
   const active = 'assets/icon-32x32.png';
   if (tabs.length === 0) {
@@ -22,7 +22,7 @@ const updateIcon = () => {
   });
 };
 
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(() => {
   chrome.tabs.onUpdated.addListener(() => updateIcon());
   chrome.tabs.onActivated.addListener(() => updateIcon());
 });

@@ -1,9 +1,6 @@
 import {REQUEST_CONTENT_SCRIPT} from "../actionTypes";
 
-const initialState = {
-  action: null,
-  payload: null
-};
+const initialState = "";
 
 export default (state = initialState, action) => {
   switch (action.type) {
