@@ -4,32 +4,43 @@
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
-    "16": "icons/icon-16x16.png",
-    "32": "icons/icon-32x32.png",
-    "128": "icons/icon-128x128.png"
+    "16": "assets/icon-16x16.png",
+    "32": "assets/icon-32x32.png",
+    "128": "assets/icon-128x128.png"
   },
   "permissions": [
     "tabs",
-    "storage",
     "https://allegro.pl/listing*",
     "https://allegro.pl/kategoria/*",
     "https://allegro.pl/uzytkownik/*"
   ],
   "content_scripts": [
-
+    {
+      "matches": [
+        "https://allegro.pl/listing*",
+        "https://allegro.pl/kategoria/*",
+        "https://allegro.pl/uzytkownik/*"
+      ],
+      "js": [
+        "content.bundle.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
   ],
   "background": {
     "scripts": [
-      "iconChanger.bundle.js"
+      "iconChanger.bundle.js",
+      "background.bundle.js"
     ],
-    "persistent": true
+    "persistent": false
   },
   "browser_action": {
     "default_icon": {
-      "16": "icons/icon-16x16.png",
-      "32": "icons/icon-32x32.png"
+      "16": "assets/icon-16x16.png",
+      "32": "assets/icon-32x32.png"
     },
-    "default_title": "Allegro niepromowane",
+    "default_title": "Allegro Znajdź Niepromowane",
     "default_popup": "popup.html"
   }
 }

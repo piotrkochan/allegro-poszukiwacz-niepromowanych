@@ -19,8 +19,10 @@ if (fileSystem.existsSync(secretsPath)) {
 const options = {
   mode: process.env.NODE_ENV || "development",
   entry: {
-    popup: path.join(__dirname, "src", "js", "popup.js"),
-    iconChanger: path.join(__dirname, "src", "js", "iconChanger.js")
+    popup: path.join(__dirname, "src", "popup", "popup.js"),
+    iconChanger: path.join(__dirname, "src", "background", "iconChanger.js"),
+    background: path.join(__dirname, "src", "background", "background.js"),
+    content: path.join(__dirname, "src", "content", "contentScript.js"),
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -28,11 +30,6 @@ const options = {
   },
   module: {
     rules: [
-      {
-        test: /\.css$/,
-        loader: "style-loader!css-loader",
-        exclude: /node_modules/
-      },
       {
         test: new RegExp('\.(' + fileExtensions.join('|') + ')$'),
         loader: "file-loader?name=[name].[ext]",
@@ -44,7 +41,7 @@ const options = {
         exclude: /node_modules/
       },
       {
-        test: /\.(js|ts|tsx|jsx)$/,
+        test: /\.(jsx|tsx|js|ts)$/,
         loader: "babel-loader",
         exclude: /node_modules/
       }
@@ -52,7 +49,7 @@ const options = {
   },
   resolve: {
     alias: alias,
-    extensions: fileExtensions.map(extension => ("." + extension)).concat([".jsx", ".ts", ".js", ".css"])
+    extensions: fileExtensions.map(extension => ("." + extension)).concat([".jsx", ".ts", ".js"])
   },
   plugins: [
     // clean the build folder
@@ -63,7 +60,7 @@ const options = {
     new webpack.EnvironmentPlugin(["NODE_ENV"]),
     new CopyWebpackPlugin([
       {
-        from: 'icons/*',
+        from: 'assets/*',
       },
       {
         from: "src/manifest.json",
@@ -77,20 +74,10 @@ const options = {
         }
       }]),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "popup.html"),
+      template: path.join(__dirname, "src", "popup", "popup.html"),
       filename: "popup.html",
       chunks: ["popup"]
     }),
-    // new HtmlWebpackPlugin({
-    //   template: path.join(__dirname, "src", "options.html"),
-    //   filename: "options.html",
-    //   chunks: ["options"]
-    // }),
-    // new HtmlWebpackPlugin({
-    //   template: path.join(__dirname, "src", "background.html"),
-    //   filename: "background.html",
-    //   chunks: ["background"]
-    // }),
     new WriteFilePlugin()
   ]
 };

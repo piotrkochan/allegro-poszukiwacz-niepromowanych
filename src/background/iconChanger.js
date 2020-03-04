@@ -5,8 +5,8 @@ const urls = [
 ];
 
 const getIcon = (tabs) => {
-  const inactive = 'icons/icon-gray-32x32.png';
-  const active = 'icons/icon-32x32.png';
+  const inactive = 'assets/icon-gray-32x32.png';
+  const active = 'assets/icon-32x32.png';
   if (tabs.length === 0) {
     return inactive;
   }

@@ -1,14 +1,14 @@
 <div align="center">
   <h1>
-    Allegro plugin do Chrome, Firefox i Opera
+    Allegro Znajdź niepromowane
   </h1>
 
   <p>
-    <strong>Nie interesują cię oferty promowane?</strong>
+    <strong>Nie interesują cię oferty promowane na Allegro?</strong>
   </p>
 </div>
 
-Ten plugin automatycznie znajduje stronę, na której znajdują się oferty niepromowane i przewija do znalezionego wyniku.
+Ten plugin automatycznie znajduje stronę, na której znajdują się oferty niepromowane i przewija do pierwszego znalezionego wyniku.
 
 ========
 
