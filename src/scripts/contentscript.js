@@ -40,7 +40,7 @@ function onRequest(request, sender, sendResponse) {
     case 'get-state':
       return sendResponse(state);
     case 'check-page-contains-offers':
-      const found = document.querySelector('.opbox-listing--base') !== null;
+      const found = document.querySelector('#opbox-listing--base') !== null;
       return sendResponse({ found });
     case 'find-regular-offers':
       if (containsRegularOffers(document)) {
