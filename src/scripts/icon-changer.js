@@ -5,7 +5,7 @@ function updateIcon() {
     let icon = 'icon-gray-32x32.png';
     if (data.length > 0) {
       const url = data[0].url;
-      if (url.startsWith("https://allegro.pl/kategoria") 
+      if (url.startsWith("https://allegro.pl/kategoria")
       || url.startsWith("https://allegro.pl/listing")
       || (url.startsWith("https://allegro.pl/uzytkownik") && !url.endsWith('sklep'))
       ) {

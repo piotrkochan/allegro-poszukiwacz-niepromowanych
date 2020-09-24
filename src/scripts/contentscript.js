@@ -40,8 +40,9 @@ function onRequest(request, sender, sendResponse) {
     case 'get-state':
       return sendResponse(state);
     case 'check-page-contains-offers':
-      const found = document.querySelector('#opbox-listing--base') !== null;
-      return sendResponse({ found });
+      return sendResponse({
+        found: Array.from(document.querySelectorAll('h2')).filter(x => x.textContent.startsWith('Oferty')).length > 0
+      });
     case 'find-regular-offers':
       if (containsRegularOffers(document)) {
         scrollToRegularOffers();
