@@ -7,7 +7,7 @@
   </p>
 </div>
 
-Ten plugin znajduje stronę na której znajdują się oferty niepromowane i przewija listing to pierwszej oferty.
+Ten plugin wyszukuje stronę na której znajdują się oferty niepromowane i przewija listing do pierwszej takiej oferty.
 
 ========
 
