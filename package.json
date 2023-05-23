@@ -3,16 +3,16 @@
   "version": "0.2.0",
   "description": "Browser extension for Allegro.pl for quick jump to not-promoted offers",
   "scripts": {
-    "chrome-build": "TARGET=chrome gulp",
-    "opera-build": "TARGET=opera gulp",
-    "firefox-build": "TARGET=firefox gulp",
+    "chrome-build": "TARGET=chrome grunt --gruntfile Gruntfile",
+    "opera-build": "TARGET=opera grunt --gruntfile Gruntfile",
+    "firefox-build": "TARGET=firefox grunt --gruntfile Gruntfile",
     "build": "NODE_ENV=production npm run chrome-build && NODE_ENV=production npm run opera-build && NODE_ENV=production npm run firefox-build",
-    "chrome-watch": "TARGET=chrome gulp watch",
-    "opera-watch": "TARGET=opera gulp watch",
-    "firefox-watch": "TARGET=firefox gulp watch",
-    "chrome-dist": "NODE_ENV=production TARGET=chrome gulp dist && NODE_ENV=production TARGET=chrome gulp zip",
-    "opera-dist": "NODE_ENV=production TARGET=opera gulp dist && NODE_ENV=production TARGET=opera gulp zip",
-    "firefox-dist": "NODE_ENV=production TARGET=firefox gulp dist && NODE_ENV=production TARGET=firefox gulp zip",
+    "chrome-watch": "TARGET=chrome grunt --gruntfile Gruntfile watch",
+    "opera-watch": "TARGET=opera grunt --gruntfile Gruntfile watch",
+    "firefox-watch": "TARGET=firefox grunt --gruntfile Gruntfile watch",
+    "chrome-dist": "NODE_ENV=production TARGET=chrome grunt --gruntfile Gruntfile dist && NODE_ENV=production TARGET=chrome grunt --gruntfile Gruntfile zip",
+    "opera-dist": "NODE_ENV=production TARGET=opera grunt --gruntfile Gruntfile dist && NODE_ENV=production TARGET=opera grunt --gruntfile Gruntfile zip",
+    "firefox-dist": "NODE_ENV=production TARGET=firefox grunt --gruntfile Gruntfile dist && NODE_ENV=production TARGET=firefox grunt --gruntfile Gruntfile zip",
     "dist": "npm run chrome-dist && npm run opera-dist && npm run firefox-dist"
   },
   "repository": {
@@ -25,13 +25,9 @@
   },
   "homepage": "https://github.com/piotrkochan/allegro-poszukiwacz-niepromowanych",
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.5.0",
-    "@babel/preset-env": "^7.5.4",
-    "@babel/register": "^7.4.4",
-    "@babel/runtime": "^7.5.4",
+    "@babel/plugin-transform-runtime": "^7.21.4",
+    "@babel/preset-env": "^7.21.5",
     "babelify": "^10.0.0",
-    "browserify": "^16.2.3",
     "grunt": "^1.6.1",
     "grunt-browserify": "^6.0.0",
     "grunt-contrib-clean": "^2.0.1",
@@ -41,13 +37,7 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-manifest": "^0.4.4",
     "grunt-sass": "^3.1.0",
-    "grunt-zip": "^0.20.0",
-    "gulp-load-plugins": "^2.0.8",
-    "merge-stream": "^2.0.0",
-    "preprocessify": "^1.0.1",
-    "run-sequence": "2.2.1",
-    "sass": "^1.62.1",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^2.0.0"
+    "grunt-zip": "^0.14.0",
+    "sass": "^1.62.1"
   }
 }

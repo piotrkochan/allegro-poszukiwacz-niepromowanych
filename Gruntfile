@@ -1,20 +1,11 @@
 module.exports = function(grunt) {
-  var browserify = require('browserify');
-  var merge = require('merge-stream');
   var fs = require('fs');
-  var preprocessify = require('preprocessify');
-  var buffer = require('vinyl-buffer');
-  var source = require('vinyl-source-stream');
 
-  var $ = require('gulp-load-plugins')();
-
-  var production = process.env.NODE_ENV === 'production';
   var target = process.env.TARGET || 'chrome';
   var environment = process.env.NODE_ENV || 'development';
 
   var generic = JSON.parse(fs.readFileSync('./config/' + environment + '.json'));
   var specific = JSON.parse(fs.readFileSync('./config/' + target + '.json'));
-  var context = Object.assign({}, generic, specific);
 
   var defaultManifest = {
     dev: {
