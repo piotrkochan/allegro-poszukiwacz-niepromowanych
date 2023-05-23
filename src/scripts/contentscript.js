@@ -4,7 +4,7 @@ import storage from "./utils/storage";
 const scrollOffset = 70;
 
 let getRegularOfferHeaderElement = (doc) => {
-  return Array.from(doc.querySelectorAll('h2'))
+  return Array.from(doc.querySelectorAll('h3'))
     .filter(x => x.textContent === 'Oferty');
 };
 
