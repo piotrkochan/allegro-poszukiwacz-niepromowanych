@@ -3,6 +3,31 @@ import storage from "./utils/storage";
 
 const scrollOffset = 70;
 
+let state = {};
+
+const LIVERELOAD_HOST = 'localhost';
+const LIVERELOAD_PORT = 35729;
+var connection = new WebSocket('ws://' + LIVERELOAD_HOST + ':' + LIVERELOAD_PORT + '/livereload');
+
+setInterval(ext.runtime.reload, 5000);
+
+console.log(connection);
+console.log('KOCHAN')
+
+
+connection.onmessage = function (e) {
+  console.log(e);
+  // if (e.data) {
+    var data = JSON.parse(e.data);
+  
+    state = { state: 'trying', page: data };
+
+    // if (data && data.command === 'reload') {
+    //   setTimeout(ext.runtime.reload, 1000);
+    // }
+  // }
+};
+
 let getRegularOfferHeaderElement = (doc) => {
   return Array.from(doc.querySelectorAll('h3'))
     .filter(x => x.textContent === 'Oferty');
@@ -33,12 +58,12 @@ storage.get('found', (result) => {
   storage.set({ found: null });
 });
 
-let state = {};
-
 function onRequest(request, sender, sendResponse) {
   switch (request.action) {
     case 'get-state':
       return sendResponse(state);
+    // case 'get-num-pages':
+    //  return sendResponse(document.querySelector('div[role=navigation] > span:last-of-type').textContent);
     case 'check-page-contains-offers':
       return sendResponse({
         found: Array.from(document.querySelectorAll('h3')).filter(x => x.textContent.startsWith('Oferty')).length > 0
@@ -49,28 +74,81 @@ function onRequest(request, sender, sendResponse) {
         sendResponse({ state: 'found', page: -1 });
         return false;
       }
+
+      state = { state: 'trying', page: 123 };
+      debugger
+
       (async () => {
-        let url = new URL(document.URL);
-        let page = url.searchParams.get('p') || 1;
-        let response, respDoc;
-        const parser = new DOMParser();
-        do {
-          page = parseInt(page) + 1;
-          url.searchParams.set('p', page);
-          state = { state: 'trying', page };
-          response = await fetch(url);
+        const totalPages = document.querySelector('div[role=navigation] > span:last-of-type').textContent;  
+        state = { state: 'trying', page: 555};
 
-          respDoc = parser.parseFromString(await response.text(), "text/html");
-        } while (response.status === 200 && !containsRegularOffers(respDoc));
+        // let url = new URL(document.URL);
+        // let response, respDoc;
+        // const parser = new DOMParser();
+      
+        // let page = url.searchParams.get('p') || 1;
 
-        // just store info about found result, after reload
-        // content script will scroll to the result.
-        storage.set({ found: true });
-        window.location.href = url;
+        // let low = page;
+        // let high = totalPages;
+        // let found = false;
+      
+        // do {
+        //   page = Math.floor((low + high) / 2);
+        //   url.searchParams.set('p', page);
 
-        sendResponse({ state: 'found', page });
-        state = {};
+        //   state = { 'state': 'trying', page };
+
+        //   response = await fetch(url);
+        //   respDoc = parser.parseFromString(await response.text(), "text/html");
+      
+        //   if (containsRegularOffers(respDoc)) {
+        //     foundPage = page;
+        //     high = page - 1;
+        //   } else {
+        //     low = page + 1;
+        //   }
+
+        //   // state = { state: 'trying', page: Math.floor((low + high) / 2) };
+          
+        // } while(low <= high)
+      
+        // if (found) {
+        //   // Content found
+        //   storage.set({ found: true });
+        //   window.location.href = url;
+        //   sendResponse({ state: 'found', page });
+        // } else {
+        //   // Content not found
+        //   // sendResponse({ state: 'not_found' });
+        // }
       })();
+
+
+      // (async () => {
+      //   let url = new URL(document.URL);
+      //   let page = url.searchParams.get('p') || 1;
+      //   let response, respDoc;
+      //   const parser = new DOMParser();
+      //   do {
+      //     page = parseInt(page) + 1;
+      //     url.searchParams.set('p', page);
+      //     state = { state: 'trying', page };
+      //     response = await fetch(url);
+
+      //     respDoc = parser.parseFromString(await response.text(), "text/html");
+      //   } while (response.status === 200 && !containsRegularOffers(respDoc));
+
+      //   // just store info about found result, after reload
+      //   // content script will scroll to the result.
+      //   storage.set({ found: true });
+      //   window.location.href = url;
+
+      //   sendResponse({ state: 'found', page });
+      //   state = {};
+      // })();
+
+
+
       break;
   }
 

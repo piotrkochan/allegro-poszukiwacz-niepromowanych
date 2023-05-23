@@ -24,12 +24,12 @@ ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       renderMessage('Wygląda na to, że na tej stronie nie ma ofert.');
       return setTimeout(() => window.close(), 3000);
     }
-
     findRegularOffers(activeTab);
   });
 });
 
 const findRegularOffers = (activeTab) => {
+  
   const requestStateInterval = setInterval(() => {
     chrome.tabs.sendMessage(activeTab.id, { action: 'get-state' }, {}, (response) => {
       if (response.state === 'trying') {
