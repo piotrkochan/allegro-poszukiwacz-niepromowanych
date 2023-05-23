@@ -41,7 +41,7 @@ function onRequest(request, sender, sendResponse) {
       return sendResponse(state);
     case 'check-page-contains-offers':
       return sendResponse({
-        found: Array.from(document.querySelectorAll('h2')).filter(x => x.textContent.startsWith('Oferty')).length > 0
+        found: Array.from(document.querySelectorAll('h3')).filter(x => x.textContent.startsWith('Oferty')).length > 0
       });
     case 'find-regular-offers':
       if (containsRegularOffers(document)) {
