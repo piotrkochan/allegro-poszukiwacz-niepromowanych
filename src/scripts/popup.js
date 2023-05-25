@@ -5,6 +5,11 @@ let renderMessage = (message) => {
   displayContainer.innerHTML = `<p class='message'>${message}</p>`;
 };
 
+let showPageAmountWarning = () => {
+  let displayContainer = document.getElementById("display-container");
+  displayContainer.innerHTML = `<p class='page-warning'>Nie znaleziono na pierwszych 100 stronach.</p><p class='page-warning'>Zawęź kryteria.</p>`;
+};
+
 ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
   let activeTab = tabs[0];
 
@@ -29,11 +34,13 @@ ext.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 });
 
 const findRegularOffers = (activeTab) => {
-  
   const requestStateInterval = setInterval(() => {
     chrome.tabs.sendMessage(activeTab.id, { action: 'get-state' }, {}, (response) => {
-      if (response.state === 'trying') {
+      if (response.state === 'searching') {
         renderMessage('szukam niepromowanych na stronie: <strong>' + response.page + '</strong>...');
+      }
+      if (response.page === 100) {
+        showPageAmountWarning();
       }
     });
   }, 500);
