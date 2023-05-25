@@ -1,0 +1,192 @@
+module.exports = function (grunt) {
+  var fs = require('fs');
+
+  const production = process.env.NODE_ENV === 'production';
+  const target = process.env.TARGET || 'chrome';
+
+  var defaultManifest = {
+    dev: {
+      'background': {
+        'scripts': [
+          'scripts/livereload.js',
+          'scripts/icon-changer.js'
+        ]
+      }
+    },
+    firefox: { 'applications': { 'gecko': { 'id': 'allegro-poszukiwacz-niepromowanych@piotrkochan' } } }
+  };
+
+  grunt.initConfig({
+    clean: {
+      options: { force: true },
+      build: ['./build/' + target + '/*']
+    },
+    sass: {
+      options: {
+        implementation: require('sass'), // Add this line
+        outputStyle: 'expanded',
+        precision: 10,
+        includePaths: ['.']
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src/styles/',
+          src: ['**/*.scss'],
+          dest: './build/' + target + '/styles/',
+          ext: '.css'
+        }]
+      }
+    },
+    browserify: {
+      options: {
+        transform: [['babelify', { presets: ['@babel/preset-env'] }]],
+        debug: true
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src/scripts/',
+          src: [
+            'contentscript.js',
+            'icon-changer.js',
+            'popup.js'
+          ],
+          dest: './build/' + target + '/scripts',
+          ext: '.js'
+        }]
+      }
+    },
+    uglify: {
+      dist: {
+        files: [{
+          expand: true,
+          cwd: './build/' + target + '/scripts',
+          src: '**/*.js',
+          dest: './build/' + target + '/scripts'
+        }]
+      }
+    },
+    // sourcemaps: {
+    //   dist: {
+    //     options: { loadMaps: true },
+    //     files: [{
+    //       expand: true,
+    //       cwd: './build/' + target + '/scripts',
+    //       src: '**/*.js.map',
+    //       dest: './build/' + target + '/scripts'
+    //     }]
+    //   }
+    // },
+    copy: {
+      icons: {
+        files: [{
+          expand: true,
+          cwd: 'src/icons/',
+          src: '**/*',
+          dest: './build/' + target + '/icons'
+        }]
+      },
+      locales: {
+        files: [{
+          expand: true,
+          cwd: 'src/_locales/',
+          src: '**/*',
+          dest: './build/' + target + '/_locales'
+        }]
+      },
+      images: {
+        files: [{
+          expand: true,
+          cwd: 'src/images/' + target + '/',
+          src: '**/*',
+          dest: './build/' + target + '/images'
+        }, {
+          expand: true,
+          cwd: 'src/images/shared/',
+          src: '**/*',
+          dest: './build/' + target + '/images'
+        }]
+      },
+      html: {
+        files: [{
+          expand: true,
+          cwd: 'src/',
+          src: '**/*.html',
+          dest: './build/' + target
+        }]
+      },
+      livereload: {
+        files: [{
+          expand: true,
+          cwd: 'src/scripts/',
+          src: 'livereload.js',
+          dest: './build/' + target + '/scripts'
+        }]
+      }
+    },
+    zip: {
+      dist: {
+        cwd: './build/' + target,
+        src: './build/' + target + '/**/*',
+        dest: './dist/' + target + '.zip'
+      }
+    },
+    watch: {
+      options: { livereload: true },
+      scripts: {
+        files: ['./src/scripts/**/*.js'],
+        tasks: ['browserify', 'uglify']
+      },
+      styles: {
+        files: ['./src/styles/**/*.scss'],
+        tasks: ['sass']
+      },
+      manifest: {
+        files: ['./manifest.json'],
+        tasks: ['manifest']
+      },
+      other: {
+        files: ['./manifest.json', './src/**/*', '!./src/scripts/**/*.js', '!./src/styles/**/*.scss'],
+        tasks: ['copy']
+      }
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-sass');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  //   grunt.loadNpmTasks('grunt-sourcemaps');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-zip');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+
+  grunt.registerTask('manifest', 'Merge manifest files', function () {
+    var manifestPath = './manifest.json';
+    var outputPath = './build/' + target + '/manifest.json';
+
+    var manifestData = grunt.file.readJSON(manifestPath);
+    var mergedData = Object.assign({}, manifestData);
+
+    if (!production) {
+      mergedData = Object.assign(mergedData, defaultManifest.dev);
+    }
+
+    if (target === 'firefox') {
+      mergedData = Object.assign(mergedData, defaultManifest.firefox);
+    }
+
+    var mergedContent = JSON.stringify(mergedData, null, ' '.repeat(4));
+    fs.writeFileSync(outputPath, mergedContent);
+    grunt.log.writeln('Manifest file merged successfully.');
+  });
+
+  grunt.registerTask('assets', ['sass', 'browserify', 'uglify']);
+  grunt.registerTask('copy_files', ['copy:icons', 'copy:locales', 'copy:images', 'copy:html']);
+  grunt.registerTask('build', ['clean', 'assets', 'copy_files', 'manifest']);
+  grunt.registerTask('dist', ['build', 'zip']);
+  grunt.registerTask('dev', ['build', 'copy:livereload', 'watch']);
+
+  grunt.registerTask('default', ['build']);
+};
