@@ -186,7 +186,7 @@ module.exports = function (grunt) {
     grunt.log.writeln('Manifest file merged successfully.');
   });
 
-  grunt.registerTask('assets', ['sass', 'browserify', 'extract_sourcemap', 'uglify']);
+  grunt.registerTask('assets', ['sass', 'browserify', 'uglify']);
   grunt.registerTask('copy_files', ['copy:icons', 'copy:locales', 'copy:images', 'copy:html']);
   grunt.registerTask('build', ['clean', 'assets', 'copy_files', 'manifest']);
   grunt.registerTask('dist', ['build', 'zip']);
