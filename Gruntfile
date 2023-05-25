@@ -2,11 +2,7 @@ module.exports = function (grunt) {
   var fs = require('fs');
 
   const production = process.env.NODE_ENV === 'production';
-  const environment = process.env.NODE_ENV || 'development';
   const target = process.env.TARGET || 'chrome';
-
-  var generic = JSON.parse(fs.readFileSync('./config/' + environment + '.json'));
-  var specific = JSON.parse(fs.readFileSync('./config/' + target + '.json'));
 
   var defaultManifest = {
     dev: {
