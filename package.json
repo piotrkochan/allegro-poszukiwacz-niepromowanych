@@ -1,6 +1,6 @@
 {
   "name": "allegro-poszukiwacz",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Browser extension for Allegro.pl for quick jump to not-promoted offers",
   "scripts": {
     "chrome-build": "TARGET=chrome grunt --gruntfile Gruntfile",

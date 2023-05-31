@@ -12,12 +12,14 @@ const initialState = {
 let searchState = initialState;
 
 let getRegularOfferHeaderElement = (doc) => {
-  return Array.from(doc.querySelectorAll('h3'))
+  return  Array.from(doc.querySelectorAll('h2'))
+    .concat(Array.from(doc.querySelectorAll('h3')))
     .filter(x => x.textContent === 'Oferty');
 };
 
 let containsAnyOffers = (doc) => {
-  return Array.from(doc.querySelectorAll('h3'))
+  return Array.from(doc.querySelectorAll('h2'))
+    .concat(Array.from(doc.querySelectorAll('h3')))
     .filter(x => x.textContent.startsWith('Oferty'))
     .length > 0;
 };
